@@ -3,7 +3,7 @@ from django.http import Http404
 from rest_framework.views import APIView
 from django.http import JsonResponse
 from .serializer import Spending_Serializer
-from .services import notice_user, Db_Get, Db_Post
+from .services import notice_user, Db_Get, Db_Post, Db_Put
 
 
 # Create your views here.
@@ -21,4 +21,17 @@ class SpendsView(APIView):
     def post(self, request):
         Db_Post.create_spending(request)
         return Response('vrode vse')
+
+
+class UsersView(APIView):
+    def post(self, request):
+        Db_Post.create_database_user(request)
+        return Response('success')
+
+
+    def put(self, request):
+        user = Db_Put.add_messenger(request)
+        if user is not None:
+            return Response('success')
+
 
