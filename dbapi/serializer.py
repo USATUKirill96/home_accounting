@@ -13,6 +13,4 @@ class Spending_Serializer(serializers.Serializer):
     name = serializers.CharField(max_length=100)
     sum = serializers.IntegerField()
     common = serializers.BooleanField()
-    user_id = serializers.IntegerField()
-    source = serializers.CharField()
 

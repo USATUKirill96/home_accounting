@@ -1,4 +1,5 @@
 
-^python:S5720"?Rename "site_id" to "self" or add the missing "self" parameter.(ó“–ì8–áêã˜.
-`python:S5720"<Rename "user" to "self" or add the missing "self" parameter.(—óİ§üÿÿÿÿ8ãñŒå˜.
-`python:S5720!"<Rename "user" to "self" or add the missing "self" parameter.(Æãğüÿÿÿÿ8ï…­å˜.
+^python:S5720>"?Rename "request" to "self" or add the missing "self" parameter.(¥ü¾8¿‘ƒ™.
+^python:S5720"?Rename "request" to "self" or add the missing "self" parameter.(«ğ²–8ƒÙë™.
+cpython:S5720$"?Rename "request" to "self" or add the missing "self" parameter.(æÙÜáûÿÿÿÿ8¿‘ƒ™.
+]python:S5720+"?Rename "request" to "self" or add the missing "self" parameter.(ÿÍç8ÂÆ‚†™.

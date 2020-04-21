@@ -3,7 +3,8 @@ from django.http import Http404
 from rest_framework.views import APIView
 from django.http import JsonResponse
 from .serializer import Spending_Serializer
-from .services import notice_user, Db_Get, Db_Post, Db_Put
+from .services import Db_Get, Db_Post, Db_Put
+from .api import Parser
 
 
 # Create your views here.
@@ -11,27 +12,33 @@ from .services import notice_user, Db_Get, Db_Post, Db_Put
 
 class SpendsView(APIView):
     def get(self, request):
-        user = notice_user(request)
-        if user is None:
-            return JsonResponse({"status":404})
-        elements = Db_Get.get_spends(user)
+        params = Parser.param_parse_get(request)
+        elements = Db_Get.get_spends(**params)
         serializer = Spending_Serializer(elements, many=True)
         return JsonResponse({"Spendings": serializer.data})
 
     def post(self, request):
-        Db_Post.create_spending(request)
+        params = Parser.param_parse_post(request)
+        Db_Post.create_spending(**params)
         return Response('vrode vse')
 
 
 class UsersView(APIView):
     def post(self, request):
-        Db_Post.create_database_user(request)
+        params = Parser.param_parse_post(request)
+        print(params)
+        Db_Post.create_database_user(**params)
         return Response('success')
 
-
     def put(self, request):
-        user = Db_Put.add_messenger(request)
+        params = Parser.param_parse_post(request)
+        user = Db_Put.add_messenger(**params)
         if user is not None:
             return Response('success')
 
 
+class ValidateView(APIView):
+    def get(self, request):
+        params = Parser.param_parse_get(request)
+        result = Db_Get.validate_user(**params)
+        return JsonResponse({"result": result})

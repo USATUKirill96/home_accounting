@@ -1,72 +1,42 @@
+import secrets
 from .models import DbUser, Spending
 from .serializer import Spending_Serializer
 
 
-def notice_user(request=None, user_id=None, source=None):
-    """Определяет пользоателя по входным данным (айди и источник), возвращает None, если пользователя нет"""
-    if request is not None:
-        source, pk = request.GET.get('source'), request.GET.get('id')
-    else:
-        pk = user_id
-        source = source
-    try:
-        if source == "telegram":
-            user = DbUser.objects.get(tg_id=pk)
-        elif source == "vk":
-            user = DbUser.objects.get(vk_id=pk)
-        elif source == "site":
-            user = DbUser.objects.get(site_id=pk)
-        else:
-            user = None
-        return user
-    except Exception:
-        return None
-
-
 class Db_Get:
-    def get_spends(request):
+    def get_spends(**kwargs):
         """Возвращает все траты пользователя"""
-        user = notice_user(request=request)
-        spends = user.spends.all()
+        spends = kwargs['user'].spends.all()
         return spends
+
+    def validate_user(**kwargs):
+        print(kwargs['user'])
+        if kwargs['user'] is not None:
+            return True
+        else:
+            return False
 
 
 class Db_Post:
-    def create_database_user(request):
-        site_id = request.data.get('user_id')
-        token = request.data.get('token')
-        user = DbUser.objects.create(site_id=site_id, token=token)
+    def create_database_user(**kwargs):
+        token = secrets.token_hex(32)
+        user = DbUser.objects.create(site_id=kwargs['site_id'], token=token)
         user.save()
-        return user
+        return user.token
 
-    def create_spending(request):
-        data = request.data
-        user_id = data.get('user_id')
-        service = data.get('source')
-        category = data.get('category')
-        name = data.get('name')
-        sum = data.get('sum')
-        common = data.get('common')
-
-        user = notice_user(user_id=user_id, source=service)
-        if common == 'True':
-            common = True
-        else:
-            common = False
-        obj = Spending.objects.create(user=user, category=category, name=name, sum=sum, common=common)
+    def create_spending(**kwargs):
+        obj = Spending.objects.create(user=kwargs['user'], category=kwargs['category'],
+                                      name=kwargs['name'], sum=kwargs['sum'], common=kwargs['common'])
         return obj.name, obj.sum
 
 
 class Db_Put:
-    def add_messenger(request):
-        source, id = request.data.get('source'), request.data.get('user_id')
-        token = request.data.get('token')
-        print(token)
-        user = DbUser.objects.get(token=token)
-        if source == 'vk':
-            user.vk_id = id
+    def add_messenger(**kwargs):
+        user = DbUser.objects.get(token=kwargs['token'])
+        if kwargs['source'] == 'vk':
+            user.vk_id = kwargs['user_id']
         else:
-            user.tg_id = id
+            user.tg_id = kwargs['user_id']
         user.save()
         return user
 
