@@ -7,8 +7,11 @@ from datetime import date
 class Db_Get:
     def get_spends(**kwargs):
         """Возвращает все траты пользователя"""
-        month = kwargs['month'] or date.today().month
-        spends = kwargs['user'].spends.filter(date__month=month).order_by('-date')
+        if not kwargs['month']:
+            spends = kwargs['user'].spends.filter(date__year=kwargs['year']).order_by('-date')
+        else:
+            spends = kwargs['user'].spends.filter(date__year=kwargs['year']).filter(
+                date__month=kwargs['month']).order_by('-date')
         return spends
 
     def validate_user(**kwargs):

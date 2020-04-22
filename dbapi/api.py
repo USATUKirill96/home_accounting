@@ -26,7 +26,8 @@ class Parser:
     def param_parse_get(request):
         user = notice_user(request)
         month = request.GET.get('month')
-        return {'user': user, 'month': month}
+        year = request.GET.get('year')
+        return {'user': user, 'month': month, 'year': year}
 
     def param_parse_post(request):
         data = request.data
