@@ -25,7 +25,8 @@ def notice_user(request=None, user_id=None, source=None):
 class Parser:
     def param_parse_get(request):
         user = notice_user(request)
-        return {'user': user}
+        month = request.GET.get('month')
+        return {'user': user, 'month': month}
 
     def param_parse_post(request):
         data = request.data
@@ -34,6 +35,7 @@ class Parser:
         category = data.get('category')
         name = data.get('name')
         sum = data.get('sum')
+        date = data.get('date')
         common = data.get('common')
         if common == 'True':
             common = True
@@ -43,4 +45,4 @@ class Parser:
         user = notice_user(user_id=user_id, source=source)
         token = data.get('token')
         return {'data': data, 'site_id': site_id, 'user_id': user_id, 'source': source, 'category': category,
-                'name': name, 'sum': sum, 'common': common, 'user': user, 'token': token}
+                'name': name, 'sum': sum, 'common': common, 'user': user, 'token': token, 'date':date}

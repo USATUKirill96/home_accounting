@@ -29,6 +29,9 @@ DEBUG = True
 ALLOWED_HOSTS = personal_setup.ALLOWED_HOSTS
 
 
+DATE_INPUT_FORMATS = ['%d-%m-%Y']
+
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -131,6 +134,6 @@ TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
 STATIC_DIR = os.path.join(BASE_DIR, 'static')
 STATIC_ROOT = os.path.join(BASE_DIR, "static/")
 
-LOGIN_REDIRECT_URL = 'dashboard'
+LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = 'login'
 LOGOUT_URL = 'logout'

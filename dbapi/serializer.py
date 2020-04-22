@@ -8,7 +8,7 @@ from .models import Spending, DbUser
 
 class Spending_Serializer(serializers.Serializer):
     id = serializers.IntegerField()
-    date = serializers.DateTimeField()
+    date = serializers.DateField(format="%d-%m-%Y")
     category = serializers.CharField(max_length=50)
     name = serializers.CharField(max_length=100)
     sum = serializers.IntegerField()
