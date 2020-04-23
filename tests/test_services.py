@@ -1,6 +1,6 @@
 from django.test import TestCase
-import requests
-from dbapi.services import Db_Post, Db_Get, Db_Put, Db_Delete, notice_user
+from datetime import date
+from dbapi.services import Db_Post, Db_Get, Db_Put, Db_Delete
 from dbapi.models import DbUser, Spending
 
 
@@ -22,12 +22,8 @@ class GetMethods(TestCase):
         print("Method: function get_spending")
         user = DbUser.objects.get(id=1)
         spending1 = user.spends.all()[0]
-        spending2 = Db_Get.get_spends(user)[0]
+        spending2 = Db_Get.get_spends(user=user, month=date.today().month, year=date.today().year)[0]
         self.assertEqual(spending1, spending2)
-
-    # def test_user_does_not_exist(self):
-    #     user = notice_user(-1, 'vk')
-    #     self.assertEqual(user, None)
 
     def test_user_does_not_have_spends(self):
         user = DbUser.objects.get(id=2)
@@ -42,16 +38,26 @@ class PostMethods(TestCase):
         print("setUpTestData: Run once to set up non-modified data for all class methods.")
         DbUser.objects.create(vk_id=1)
         DbUser.objects.create(vk_id=2)
-        Spending.objects.create(user=DbUser.objects.get(id=1), category="продукты", name="молоко", sum=100)
-
-    # def test_create_db_user(self):
-    #     user1 = Db_Post.create_database_user(site_id=22, token='asdf')
-    #     user2 = notice_user(22, 'site')
-    #     self.assertEqual(user1, user2)
+        Spending.objects.create(user=DbUser.objects.get(id=1), category="продукты", name="молоко", sum=100,
+                                common=False)
 
     def test_create_spending(self):
         user = DbUser.objects.get(id=2)
-        Db_Post.create_spending(user=user, category="продукты", name="пиво", sum=32)
+        Db_Post.create_spending(user=user, category="продукты", name="пиво", sum=32, common=False, date=date.today())
         spending2 = user.spends.get(sum=32)
         self.assertEqual(spending2.category, "продукты")
+
+
+class PutMethods(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        DbUser.objects.create(vk_id=1, tg_id=1)
+        Spending.objects.create(user=DbUser.objects.get(id=1), category="продукты", name="молоко", sum=100,
+                                common=False)
+
+    def test_edit_spending(self):
+        user = DbUser.objects.get(id=1)
+        id = user.spends.all()[0].id
+        Db_Put.edit_spending(spending_id=id, name="кулич", category="", sum="", common="", date="")
+        self.assertEqual((user.spends.all()[0].name, user.spends.all()[0].sum), ("кулич", 100))
 

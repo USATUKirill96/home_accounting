@@ -1,16 +1,14 @@
-from rest_framework.response import Response
-from django.http import Http404
-from rest_framework.views import APIView
 from django.http import JsonResponse
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
+from .parser import Parser
 from .serializer import Spending_Serializer
 from .services import Db_Get, Db_Post, Db_Put
-from .api import Parser
-
-
-# Create your views here.
 
 
 class SpendsView(APIView):
+    """Defines views for requests associated with spendings."""
     def get(self, request):
         params = Parser.param_parse_get(request)
         elements = Db_Get.get_spends(**params)
@@ -24,6 +22,7 @@ class SpendsView(APIView):
 
 
 class UsersView(APIView):
+    """Defines views for requests associated with users."""
     def post(self, request):
         params = Parser.param_parse_post(request)
         print(params)
@@ -32,12 +31,13 @@ class UsersView(APIView):
 
     def put(self, request):
         params = Parser.param_parse_post(request)
-        user = Db_Put.add_messenger(**params)
+        user = Db_Put.edit_messenger(**params)
         if user is not None:
             return Response('success')
 
 
 class ValidateView(APIView):
+    """Defines views for requests associated with validation."""
     def get(self, request):
         params = Parser.param_parse_get(request)
         result = Db_Get.validate_user(**params)
