@@ -61,3 +61,19 @@ class PutMethods(TestCase):
         Db_Put.edit_spending(spending_id=id, name="кулич", category="", sum="", common="", date="")
         self.assertEqual((user.spends.all()[0].name, user.spends.all()[0].sum), ("кулич", 100))
 
+
+class DeleteMethods(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        DbUser.objects.create(vk_id=1, tg_id=1)
+        Spending.objects.create(user=DbUser.objects.get(id=1), category="продукты", name="молоко", sum=100,
+                                common=False)
+
+    def test_delete_spending(self):
+        Db_Delete.delete_spending(spending_id=1)
+        try:
+            Spending.objects.get(id=1)
+            result = False
+        except:
+            result = True
+        self.assertEqual(result, True)

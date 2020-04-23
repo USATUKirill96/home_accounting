@@ -79,4 +79,8 @@ class Db_Put:
 
 
 class Db_Delete:
-    pass
+    def delete_spending(**kwargs):
+        """Deletes chosen spending. Takes spending_id, returns number of deleted objects if deleting is successful"""
+        object_to_delete = Spending.objects.get(id=kwargs['spending_id'])
+        objects_deleted = object_to_delete.delete()
+        return objects_deleted

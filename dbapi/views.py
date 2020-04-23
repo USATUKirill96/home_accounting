@@ -4,11 +4,12 @@ from rest_framework.views import APIView
 
 from .parser import Parser
 from .serializer import Spending_Serializer
-from .services import Db_Get, Db_Post, Db_Put
+from .services import Db_Get, Db_Post, Db_Put, Db_Delete
 
 
 class SpendsView(APIView):
     """Defines views for requests associated with spendings."""
+
     def get(self, request):
         params = Parser.param_parse_get(request)
         elements = Db_Get.get_spends(**params)
@@ -20,9 +21,20 @@ class SpendsView(APIView):
         Db_Post.create_spending(**params)
         return Response('vrode vse')
 
+    def put(self, request):
+        params = Parser.param_parse_post(request)
+        Db_Put.edit_spending(**params)
+        return True
+
+    def delete(self, request):
+        params = Parser.param_parse_get(request)
+        Db_Delete.delete_spending(**params)
+        return True
+
 
 class UsersView(APIView):
     """Defines views for requests associated with users."""
+
     def post(self, request):
         params = Parser.param_parse_post(request)
         print(params)
@@ -38,6 +50,7 @@ class UsersView(APIView):
 
 class ValidateView(APIView):
     """Defines views for requests associated with validation."""
+
     def get(self, request):
         params = Parser.param_parse_get(request)
         result = Db_Get.validate_user(**params)
