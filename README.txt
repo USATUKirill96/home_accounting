@@ -15,3 +15,7 @@ data = requests.post('http://127.0.0.1:8000/api/users/', data = {'site_id':'2'})
 Валидация пользователя по идентефикатору источника и наименованию источника
 result = requests.get('http://localhost:8000/api/validate?user_id=4&source=vk')
 
+Удаление записи
+requests.delete(f'http://localhost:8000/api/spends/?spending_id={spending_id}')
+
+

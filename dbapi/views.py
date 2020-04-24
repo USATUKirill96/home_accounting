@@ -23,8 +23,8 @@ class SpendsView(APIView):
 
     def put(self, request):
         params = Parser.param_parse_post(request)
-        Db_Put.edit_spending(**params)
-        return True
+        result = Db_Put.edit_spending(**params)
+        return Response(result)
 
     def delete(self, request):
         params = Parser.param_parse_get(request)

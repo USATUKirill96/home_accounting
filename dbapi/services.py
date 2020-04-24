@@ -68,14 +68,17 @@ class Db_Put:
     def edit_spending(**kwargs):
         """Changes spending object in database. Takes named arguments:
         spending_id, category, name, sum, common, date. Returns redacted object."""
-        redacted_spending = Spending.objects.get(id=kwargs['spending_id'])
+        try:
+            redacted_spending = kwargs['user'].spends.get(id=kwargs['spending_id'])
+        except:
+            return False
         redacted_spending.category = kwargs['category'] or redacted_spending.category
         redacted_spending.name = kwargs['name'] or redacted_spending.name
         redacted_spending.sum = kwargs['sum'] or redacted_spending.sum
         redacted_spending.common = kwargs['common'] or redacted_spending.common
         redacted_spending.date = kwargs['date'] or redacted_spending.date
         redacted_spending.save()
-        return redacted_spending
+        return True
 
 
 class Db_Delete:
