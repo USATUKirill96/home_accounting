@@ -46,6 +46,7 @@ class Parser:
 
         # spending variables
         spending_id = data.get('spending_id')
+        operation_id = data.get('operation_id')
         category = data.get('category')
         name = data.get('name')
         sum = data.get('sum')
@@ -58,4 +59,4 @@ class Parser:
 
         return {'data': data, 'site_id': site_id, 'user_id': user_id, 'source': source, 'category': category,
                 'name': name, 'sum': sum, 'common': common, 'user': user, 'token': token, 'date': date,
-                'spending_id': spending_id}
+                'spending_id': spending_id, 'operation_id': operation_id}

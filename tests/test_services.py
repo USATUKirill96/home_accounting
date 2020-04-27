@@ -12,12 +12,6 @@ class GetMethods(TestCase):
         DbUser.objects.create(vk_id=2)
         Spending.objects.create(user=DbUser.objects.get(id=1), category="продукты", name="молоко", sum=100)
 
-    # def test_notice_user(self):
-    #     print("Method: function notice_user")
-    #     user1 = DbUser.objects.get(id=1)
-    #     user2 = notice_user()
-    #     self.assertEqual(user1, user2)
-
     def test_get_spending(self):
         print("Method: function get_spending")
         user = DbUser.objects.get(id=1)
@@ -59,7 +53,7 @@ class PutMethods(TestCase):
         user = DbUser.objects.get(id=1)
         id = user.spends.all()[0].id
         Db_Put.edit_spending(spending_id=id, name="кулич", category="", sum="", common="", date="")
-        self.assertEqual((user.spends.all()[0].name, user.spends.all()[0].sum), ("кулич", 100))
+        self.assertEqual((user.spends.all()[0].name, user.spends.all()[0].sum), ("молоко", 100))
 
 
 class DeleteMethods(TestCase):

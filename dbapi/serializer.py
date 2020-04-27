@@ -9,3 +9,11 @@ class Spending_Serializer(serializers.Serializer):
     name = serializers.CharField(max_length=100)
     sum = serializers.IntegerField()
     common = serializers.BooleanField()
+
+
+class Incomes_Serializer(serializers.Serializer):
+    """Formats data from ORM objects to JSON dict"""
+    id = serializers.IntegerField()
+    date = serializers.DateField(format="%d-%m-%Y")
+    name = serializers.CharField(max_length=100)
+    sum = serializers.IntegerField()
