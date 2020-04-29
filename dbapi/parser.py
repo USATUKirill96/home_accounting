@@ -31,7 +31,8 @@ class Parser:
         month = request.GET.get('month')
         year = request.GET.get('year')
         spending_id = request.GET.get('spending_id')
-        return {'user': user, 'month': month, 'year': year, 'spending_id':spending_id}
+        operation_id = request.GET.get('operation_id')
+        return {'user': user, 'month': month, 'year': year, 'spending_id': spending_id, 'operation_id': operation_id}
 
     def param_parse_post(request):
         """extracts data from request. Returns positional arguments dictionary, consists of objects:

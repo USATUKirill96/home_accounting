@@ -29,7 +29,7 @@ class SpendsView(APIView):
     def delete(self, request):
         params = Parser.param_parse_get(request)
         Db_Delete.delete_spending(**params)
-        return True
+        return Response(True)
 
 
 class UsersView(APIView):

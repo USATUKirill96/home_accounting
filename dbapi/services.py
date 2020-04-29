@@ -118,12 +118,19 @@ class Db_Put:
 class Db_Delete:
     def delete_spending(**kwargs):
         """Deletes chosen spending. Takes spending_id, returns number of deleted objects if deleting is successful"""
-        object_to_delete = Spending.objects.get(id=kwargs['spending_id'])
-        objects_deleted = object_to_delete.delete()
-        return objects_deleted
+        try:
+            object_to_delete = kwargs['user'].spends.get(id=kwargs['spending_id'])
+            objects_deleted = object_to_delete.delete()
+            return objects_deleted
+        except:
+            return False
 
     def delete_income(**kwargs):
         """Deletes chosen income. Takes operation_id, returns number of deleted objects if deleting is successful"""
-        object_to_delete = Income.objects.get(id=kwargs['operation_id'])
-        objects_deleted = object_to_delete.delete()
-        return objects_deleted
+        try:
+            object_to_delete = kwargs['user'].incomes.get(id=kwargs['operation_id'])
+            objects_deleted = object_to_delete.delete()
+            return objects_deleted
+        except:
+            return False
+
