@@ -1,7 +1,7 @@
 import secrets
 from django.db.models import Q
 
-from .models import DbUser, Spending, Income
+from .models import *
 
 
 def token_generator():
@@ -41,6 +41,9 @@ class Db_Get:
         except:
             return None
 
+    def get_limitations(**kwargs):
+        return kwargs['user'].limitations
+
     def validate_user(**kwargs):
         """validates if user exist, using parser data. Returns True or False in response"""
         print(kwargs['user'])
@@ -70,6 +73,13 @@ class Db_Post:
     def create_income(**kwargs):
         obj = Income.objects.create(user=kwargs['user'], name=kwargs['name'], sum=kwargs['sum'], date=kwargs['date'])
         return obj.name, obj.sum
+
+    def create_limitation(**kwargs):
+        try:
+            limitation = Limitation.objects.create(user=kwargs['user'], category=kwargs['category'], sum=kwargs['sum'])
+            return limitation.category, limitation.sum
+        except:
+            return None
 
 
 class Db_Put:
@@ -114,6 +124,15 @@ class Db_Put:
             return False
         return Db_Put.edit_operation(redacted_income, kwargs['name'], kwargs['sum'], kwargs['date'])
 
+    def edit_limitation(**kwargs):
+        try:
+            redacted_limitation = kwargs['user'].limitations.get(category=kwargs['category'])
+        except:
+            return None
+        redacted_limitation.sum = kwargs['sum']
+        redacted_limitation.save()
+        return redacted_limitation
+
 
 class Db_Delete:
     def delete_spending(**kwargs):
@@ -133,4 +152,11 @@ class Db_Delete:
             return objects_deleted
         except:
             return False
+
+    def delete_limitation(**kwargs):
+        try:
+            limitation_to_delete = kwargs['user'].limitations.get(category=kwargs['category'])
+            return limitation_to_delete.delete()
+        except:
+            return None
 

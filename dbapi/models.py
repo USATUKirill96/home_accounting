@@ -1,8 +1,6 @@
-from django.db import models
-from django.utils import timezone
-from django.urls import reverse
 from datetime import date
-from . import strings
+
+from django.db import models
 
 
 class DbUser(models.Model):
@@ -16,7 +14,7 @@ class DbUser(models.Model):
 class Spending(models.Model):
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(DbUser, on_delete=models.CASCADE, related_name='spends', verbose_name="пользователь")
-    date = models.DateField(default=date.today,  verbose_name="дата")
+    date = models.DateField(default=date.today, verbose_name="дата")
     category = models.CharField(max_length=50, verbose_name="категория траты")
     name = models.CharField(max_length=100, blank=True, verbose_name="наименование траты")
     sum = models.IntegerField(verbose_name="сумма траты")
@@ -26,6 +24,13 @@ class Spending(models.Model):
 class Income(models.Model):
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(DbUser, on_delete=models.CASCADE, related_name='incomes', verbose_name="пользователь")
-    date = models.DateField(default=date.today,  verbose_name="дата")
+    date = models.DateField(default=date.today, verbose_name="дата")
     name = models.CharField(max_length=100, blank=True, verbose_name="источник дохода")
+    sum = models.IntegerField(verbose_name="сумма")
+
+
+class Limitation(models.Model):
+    id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(DbUser, on_delete=models.CASCADE, related_name='limitations', verbose_name="пользователь")
+    category = models.CharField(max_length=50, verbose_name="категория траты", unique=True)
     sum = models.IntegerField(verbose_name="сумма")

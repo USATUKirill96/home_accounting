@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .parser import Parser
-from .serializer import Spending_Serializer, Incomes_Serializer
+from .serializer import *
 from .services import Db_Get, Db_Post, Db_Put, Db_Delete
 
 
@@ -80,3 +80,26 @@ class IncomesView(APIView):
         data = Parser.param_parse_get(request)
         result = Db_Delete.delete_income(**data)
         return JsonResponse({"result": result})
+
+
+class LimitationView(APIView):
+    def get(self, request):
+        data = Parser.param_parse_get(request)
+        limitations = Db_Get.get_limitations(**data)
+        serializer = Limitations_Serializer(limitations, many=True)
+        return JsonResponse({"Limitations": serializer.data})
+
+    def post(self, request):
+        data = Parser.param_parse_post(request)
+        limitation = Db_Post.create_limitation(**data)
+        return JsonResponse({"Limitation": limitation})
+
+    def put(self, request):
+        data = Parser.param_parse_post(request)
+        limitation = Db_Put.edit_limitation(**data)
+        return JsonResponse({"Limitation": limitation})
+
+    def delete(self, request):
+        data = Parser.param_parse_get(request)
+        limitation = Db_Delete.delete_limitation(**data)
+        return JsonResponse({"Limitation": limitation})

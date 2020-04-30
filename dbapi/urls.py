@@ -6,4 +6,5 @@ urlpatterns = [
     path('users/', views.UsersView.as_view()),
     path('validate/', views.ValidateView.as_view()),
     path('incomes/', views.IncomesView.as_view()),
+    path('limitations/', views.LimitationView.as_view()),
 ]

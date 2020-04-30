@@ -17,3 +17,9 @@ class Incomes_Serializer(serializers.Serializer):
     date = serializers.DateField(format="%d-%m-%Y")
     name = serializers.CharField(max_length=100)
     sum = serializers.IntegerField()
+
+
+class Limitations_Serializer(serializers.Serializer):
+    id = serializers.IntegerField()
+    category = serializers.CharField(max_length=50)
+    sum = serializers.IntegerField()

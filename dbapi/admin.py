@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import DbUser, Spending, Income
+from .models import DbUser, Spending, Income, Limitation
 
 
 # Регистрация сущностей БД в панели администратора
@@ -13,5 +13,10 @@ class Spending_admin(admin.ModelAdmin):
     list_display = ('id', 'user', 'date', 'category', 'name', 'sum', 'common')  # атрибуты в списке объектов
 
 @admin.register(Income)
-class Spending_admin(admin.ModelAdmin):
+class Income_admin(admin.ModelAdmin):
     list_display = ('id', 'user', 'date', 'name', 'sum')  # атрибуты в списке объектов
+
+@admin.register(Limitation)
+class Limitation_admin(admin.ModelAdmin):
+    list_display = ('id', 'user', 'category', 'sum')  # атрибуты в списке объектов
+
